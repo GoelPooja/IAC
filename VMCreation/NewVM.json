@@ -1,0 +1,104 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "newVMName": {
+      "type": "string",
+      "defaultValue": "Test123"
+    },
+    "labName": {
+      "type": "string",
+      "defaultValue": "AXTesting"
+    },
+    "size": {
+      "type": "string",
+      "defaultValue": "Standard_D11_v2"
+    },
+    "userName": {
+      "type": "string",
+      "defaultValue": "azureadminlab"
+    },
+    "password": {
+      "type": "securestring"
+    },
+    "AD_Join_domainName": {
+      "type": "string",
+      "defaultValue": "cloud.apra.com.au"
+    },
+    "AD_Join_domainOU": {
+      "type": "string",
+      "defaultValue": "OU=Test,DC=onapra,DC=com,DC=au"
+    },
+    "AD_Join_domainJoinUser": {
+      "type": "string",
+      "defaultValue": "azureadmin@cloud.apra.com.au"
+    },
+    "AD_Join_domainJoinUserPassword": {
+      "type": "securestring"
+    },
+    "AD_Join_domainJoinOptions": {
+      "type": "string",
+      "defaultValue": "3"
+    }
+  },
+  "variables": {
+    "labSubnetName": "GWSubnet1",
+    "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
+    "labVirtualNetworkName": "GatewayVNet",
+    "vmId": "[resourceId ('Microsoft.DevTestLab/labs/virtualMachines', parameters('labName'), parameters('newVMName'))]",
+    "vmName": "[concat(parameters('labName'), '/', parameters('newVMName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-05-15",
+      "type": "Microsoft.DevTestLab/labs/virtualMachines",
+      "name": "[variables('vmName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
+        "notes": "AXBaseV09",
+        "customImageId": "/subscriptions/9eebf8a1-588d-461a-b4e1-8cfb9347b44b/resourcegroups/axtestingrg395670/providers/microsoft.devtestlab/labs/axtesting/customimages/axbasev09",
+        "size": "[parameters('size')]",
+        "userName": "[parameters('userName')]",
+        "password": "[parameters('password')]",
+        "isAuthenticationWithSshKey": false,
+        "artifacts": [
+          {
+            "artifactId": "[resourceId('Microsoft.DevTestLab/labs/artifactSources/artifacts', parameters('labName'), 'Public Repo', 'windows-domain-join')]",
+            "parameters": [
+              {
+                "name": "domainName",
+                "value": "[parameters('AD_Join_domainName')]"
+              },
+              {
+                "name": "domainOU",
+                "value": "[parameters('AD_Join_domainOU')]"
+              },
+              {
+                "name": "domainJoinUser",
+                "value": "[parameters('AD_Join_domainJoinUser')]"
+              },
+              {
+                "name": "domainJoinUserPassword",
+                "value": "[parameters('AD_Join_domainJoinUserPassword')]"
+              },
+              {
+                "name": "domainJoinOptions",
+                "value": "[parameters('AD_Join_domainJoinOptions')]"
+              }
+            ]
+          }
+        ],
+        "labSubnetName": "[variables('labSubnetName')]",
+        "disallowPublicIpAddress": true,
+        "storageType": ""
+      }
+    }
+  ],
+  "outputs": {
+    "labVMId": {
+      "type": "string",
+      "value": "[variables('vmId')]"
+    }
+  }
+}

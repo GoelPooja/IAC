@@ -1,0 +1,19 @@
+[ClassVersion("1.0"), FriendlyName("cVSTSAgent")]
+class cVSTSAgent : OMI_BaseResource
+{
+[write] string Name;
+[write] string MachineGroup;
+[write] string Tags[];
+[write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
+[Key] string ProjectName;
+[Key] string VstsUrl;
+[write] string InstallFolder;
+[write] string PoolName;
+[Key] string token;
+[write] boolean Overwrite;
+[write] string AgentPackagePath;
+[write] string Service;
+[write] string workFolder;
+[write] string Username;
+[write] string Password;
+};

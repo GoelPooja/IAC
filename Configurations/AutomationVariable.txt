@@ -1,0 +1,6 @@
+Name	|	Value
+Domain	|	test
+CrmLicenseKey   |   	RMVHK-NFB23-VPB26-H9H28-W444D
+MediaShare  |   \\SYDPRODIPAM01.apra.com.au\CLEF_IaC
+CrmSqlServer    |   #Please capture it from CRM SQL Installation
+CrmSqlInstance  |   #Please capture it from CRM SQL Installation

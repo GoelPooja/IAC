@@ -1,0 +1,8 @@
+[ClassVersion("1.0"), FriendlyName("cWebServer")]
+class cWebServer : OMI_BaseResource
+{
+[Key] string Name;
+[write] string FeatureName;
+[write,ValueMap{"Present", "Absent"},Values{"Present", "Absent"}] string Ensure;
+[write] boolean IncludeAllSubFeature;
+};

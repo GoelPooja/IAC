@@ -1,0 +1,9 @@
+[ClassVersion("1.0"), FriendlyName("cAddDbToAag")]
+class cAddDbToAag : OMI_BaseResource
+{
+[Key] string SqlAlwaysOnAvailabilityGroupName;
+[Key] string DatabaseNames[];
+[Key] string PrimaryReplica;
+[Key] string SecondaryReplica;
+[Key,EmbeddedInstance("MSFT_Credential")] string SqlAdministratorCredential;
+};
